@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription 
+    fmiVersion="2.0" 
+    modelName="AGVFMU" 
+    guid="abcdef12-3456-789a-bcde-f123456789ab" 
+    variableNamingConvention="flat"
+    generationTool="UniFMU"
+>
+    <!-- Co-Simulation element -->
+    <CoSimulation 
+        modelIdentifier="unifmu" 
+        needsExecutionTool="true" 
+        canHandleVariableCommunicationStepSize="true" 
+        canNotUseMemoryManagementFunctions="false"
+    />
+
+    <ModelVariables>
+        <!-- ======================= INPUTS ======================= -->
+        <!-- Hız Komutları -->
+        <ScalarVariable name="des_v" valueReference="0" causality="input" variability="continuous">
+            <Real start="0.5"/>
+        </ScalarVariable>
+        <ScalarVariable name="des_omega" valueReference="1" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+
+        <!-- Alternatif: Hedef Pozisyon ve Yönelim -->
+        <ScalarVariable name="des_x" valueReference="2" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="des_y" valueReference="3" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="des_theta" valueReference="4" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+
+        <!-- ======================= OUTPUTS ======================= -->
+        <ScalarVariable name="x" valueReference="5" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="y" valueReference="6" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="theta" valueReference="7" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+    </ModelVariables>
+
+    <ModelStructure>
+        <Outputs>
+            <Unknown index="1"/>
+            <Unknown index="2"/>
+            <Unknown index="3"/>
+        </Outputs>
+    </ModelStructure>
+</fmiModelDescription>
