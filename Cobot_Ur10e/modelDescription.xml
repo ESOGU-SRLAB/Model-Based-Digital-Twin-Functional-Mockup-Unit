@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+    fmiVersion="2.0"
+    modelName="UR10eCobotFMU"
+    guid="abcdef12-3456-789a-bcde-f123456789ab"
+    variableNamingConvention="flat"
+    generationTool="UniFMU"
+>
+    <!-- CoSimulation element -->
+    <CoSimulation
+        modelIdentifier="unifmu"
+        needsExecutionTool="true"
+        canHandleVariableCommunicationStepSize="true"
+        canNotUseMemoryManagementFunctions="false"
+    />
+
+    <ModelVariables>
+        <!-- ======================= INPUTS ======================= -->
+        <!-- End-effector istenen pozisyon -->
+        <ScalarVariable name="x_des" valueReference="0" causality="input" variability="continuous">
+            <Real start="0.5"/>
+        </ScalarVariable>
+        <ScalarVariable name="y_des" valueReference="1" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="z_des" valueReference="2" causality="input" variability="continuous">
+            <Real start="0.5"/>
+        </ScalarVariable>
+        <!-- End-effector istenen oryantasyonu (Euler: roll, pitch, yaw) -->
+        <ScalarVariable name="roll_des" valueReference="3" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="pitch_des" valueReference="4" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="yaw_des" valueReference="5" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <!-- Ortak PD kontrol kazançları -->
+        <ScalarVariable name="kp" valueReference="6" causality="input" variability="continuous">
+            <Real start="10.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="kd" valueReference="7" causality="input" variability="continuous">
+            <Real start="2.0"/>
+        </ScalarVariable>
+
+        <!-- ======================= OUTPUTS ======================= -->
+        <!-- Gerçek Eklem Açılar (6 DOF) -->
+        <ScalarVariable name="q1" valueReference="8" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="q2" valueReference="9" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="q3" valueReference="10" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="q4" valueReference="11" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="q5" valueReference="12" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="q6" valueReference="13" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <!-- Eklem Hızları (Opsiyonel) -->
+        <ScalarVariable name="dq1" valueReference="14" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="dq2" valueReference="15" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="dq3" valueReference="16" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="dq4" valueReference="17" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="dq5" valueReference="18" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="dq6" valueReference="19" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <!-- End-effector Konumu -->
+        <ScalarVariable name="ee_x" valueReference="20" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="ee_y" valueReference="21" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="ee_z" valueReference="22" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <!-- End-effector Oryantasyonu (Euler: roll, pitch, yaw) -->
+        <ScalarVariable name="ee_roll" valueReference="23" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="ee_pitch" valueReference="24" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="ee_yaw" valueReference="25" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <!-- Eklem Torkları (Opsiyonel, dinamik hesaplamalar yapılıyorsa) -->
+        <ScalarVariable name="tau1" valueReference="26" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="tau2" valueReference="27" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="tau3" valueReference="28" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="tau4" valueReference="29" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="tau5" valueReference="30" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="tau6" valueReference="31" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+    </ModelVariables>
+
+    <ModelStructure>
+        <Outputs>
+            <!-- Çıktıların sırası, isteğe bağlı olarak indekslenir. -->
+            <Unknown index="1"/>
+            <Unknown index="2"/>
+            <Unknown index="3"/>
+            <Unknown index="4"/>
+            <Unknown index="5"/>
+            <Unknown index="6"/>
+            <Unknown index="7"/>
+            <Unknown index="8"/>
+            <Unknown index="9"/>
+            <Unknown index="10"/>
+            <Unknown index="11"/>
+            <Unknown index="12"/>
+            <Unknown index="13"/>
+            <Unknown index="14"/>
+            <Unknown index="15"/>
+            <Unknown index="16"/>
+            <Unknown index="17"/>
+            <Unknown index="18"/>
+            <Unknown index="19"/>
+            <Unknown index="20"/>
+            <Unknown index="21"/>
+            <Unknown index="22"/>
+            <Unknown index="23"/>
+            <Unknown index="24"/>
+            <Unknown index="25"/>
+            <Unknown index="26"/>
+            <Unknown index="27"/>
+            <Unknown index="28"/>
+            <Unknown index="29"/>
+            <Unknown index="30"/>
+            <Unknown index="31"/>
+        </Outputs>
+    </ModelStructure>
+</fmiModelDescription>
