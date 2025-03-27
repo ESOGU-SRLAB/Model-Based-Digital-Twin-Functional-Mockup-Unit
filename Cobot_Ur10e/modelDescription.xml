@@ -16,7 +16,7 @@
 
     <ModelVariables>
         <!-- ======================= INPUTS ======================= -->
-        <!-- End-effector istenen pozisyon -->
+        <!-- End-effector desired position -->
         <ScalarVariable name="x_des" valueReference="0" causality="input" variability="continuous">
             <Real start="0.5"/>
         </ScalarVariable>
@@ -26,7 +26,7 @@
         <ScalarVariable name="z_des" valueReference="2" causality="input" variability="continuous">
             <Real start="0.5"/>
         </ScalarVariable>
-        <!-- End-effector istenen oryantasyonu (Euler: roll, pitch, yaw) -->
+        <!-- End-effector desired orientation (Euler: roll, pitch, yaw) -->
         <ScalarVariable name="roll_des" valueReference="3" causality="input" variability="continuous">
             <Real start="0.0"/>
         </ScalarVariable>
@@ -36,7 +36,7 @@
         <ScalarVariable name="yaw_des" valueReference="5" causality="input" variability="continuous">
             <Real start="0.0"/>
         </ScalarVariable>
-        <!-- Ortak PD kontrol kazançları -->
+        <!-- Common PD control gains -->
         <ScalarVariable name="kp" valueReference="6" causality="input" variability="continuous">
             <Real start="10.0"/>
         </ScalarVariable>
@@ -45,7 +45,7 @@
         </ScalarVariable>
 
         <!-- ======================= OUTPUTS ======================= -->
-        <!-- Gerçek Eklem Açılar (6 DOF) -->
+        <!-- Actual joint angles (6 DOF) -->
         <ScalarVariable name="q1" valueReference="8" causality="output" variability="continuous" initial="calculated">
             <Real/>
         </ScalarVariable>
@@ -64,7 +64,7 @@
         <ScalarVariable name="q6" valueReference="13" causality="output" variability="continuous" initial="calculated">
             <Real/>
         </ScalarVariable>
-        <!-- Eklem Hızları (Opsiyonel) -->
+        <!-- Joint velocities -->
         <ScalarVariable name="dq1" valueReference="14" causality="output" variability="continuous" initial="calculated">
             <Real/>
         </ScalarVariable>
@@ -83,7 +83,7 @@
         <ScalarVariable name="dq6" valueReference="19" causality="output" variability="continuous" initial="calculated">
             <Real/>
         </ScalarVariable>
-        <!-- End-effector Konumu -->
+        <!-- End-effector position -->
         <ScalarVariable name="ee_x" valueReference="20" causality="output" variability="continuous" initial="calculated">
             <Real/>
         </ScalarVariable>
@@ -93,7 +93,7 @@
         <ScalarVariable name="ee_z" valueReference="22" causality="output" variability="continuous" initial="calculated">
             <Real/>
         </ScalarVariable>
-        <!-- End-effector Oryantasyonu (Euler: roll, pitch, yaw) -->
+        <!-- End-effector orientation (Euler: roll, pitch, yaw) -->
         <ScalarVariable name="ee_roll" valueReference="23" causality="output" variability="continuous" initial="calculated">
             <Real/>
         </ScalarVariable>
@@ -103,7 +103,7 @@
         <ScalarVariable name="ee_yaw" valueReference="25" causality="output" variability="continuous" initial="calculated">
             <Real/>
         </ScalarVariable>
-        <!-- Eklem Torkları (Opsiyonel, dinamik hesaplamalar yapılıyorsa) -->
+        <!-- Joint torques -->
         <ScalarVariable name="tau1" valueReference="26" causality="output" variability="continuous" initial="calculated">
             <Real/>
         </ScalarVariable>
@@ -126,15 +126,6 @@
 
     <ModelStructure>
         <Outputs>
-            <!-- Çıktıların sırası, isteğe bağlı olarak indekslenir. -->
-            <Unknown index="1"/>
-            <Unknown index="2"/>
-            <Unknown index="3"/>
-            <Unknown index="4"/>
-            <Unknown index="5"/>
-            <Unknown index="6"/>
-            <Unknown index="7"/>
-            <Unknown index="8"/>
             <Unknown index="9"/>
             <Unknown index="10"/>
             <Unknown index="11"/>
@@ -158,6 +149,33 @@
             <Unknown index="29"/>
             <Unknown index="30"/>
             <Unknown index="31"/>
+            <Unknown index="32"/>
         </Outputs>
+        <InitialUnknowns>
+            <Unknown index="9"/>
+            <Unknown index="10"/>
+            <Unknown index="11"/>
+            <Unknown index="12"/>
+            <Unknown index="13"/>
+            <Unknown index="14"/>
+            <Unknown index="15"/>
+            <Unknown index="16"/>
+            <Unknown index="17"/>
+            <Unknown index="18"/>
+            <Unknown index="19"/>
+            <Unknown index="20"/>
+            <Unknown index="21"/>
+            <Unknown index="22"/>
+            <Unknown index="23"/>
+            <Unknown index="24"/>
+            <Unknown index="25"/>
+            <Unknown index="26"/>
+            <Unknown index="27"/>
+            <Unknown index="28"/>
+            <Unknown index="29"/>
+            <Unknown index="30"/>
+            <Unknown index="31"/>
+            <Unknown index="32"/>
+        </InitialUnknowns>
     </ModelStructure>
 </fmiModelDescription>

@@ -69,19 +69,26 @@
 
     <ModelStructure>
         <Outputs>
-            <!--  
-                index sıralaması, bu değişkenlerin çıktılar arasındaki sırasını belirtir.
-                Araçların çoğu bunu tamamen göz ardı edebilir, ama tipik kullanım bu şekildedir.
-            -->
-            <Unknown index="1"/>
-            <Unknown index="2"/>
-            <Unknown index="3"/>
-            <Unknown index="4"/>
-            <Unknown index="5"/>
             <Unknown index="6"/>
             <Unknown index="7"/>
             <Unknown index="8"/>
             <Unknown index="9"/>
+            <Unknown index="10"/>
+            <Unknown index="11"/>
+            <Unknown index="12"/>
+            <Unknown index="13"/>
+            <Unknown index="14"/>
         </Outputs>
+        <InitialUnknowns>
+            <Unknown index="6"/>
+            <Unknown index="7"/>
+            <Unknown index="8"/>
+            <Unknown index="9"/>
+            <Unknown index="10"/>
+            <Unknown index="11"/>
+            <Unknown index="12"/>
+            <Unknown index="13"/>
+            <Unknown index="14"/>
+        </InitialUnknowns>
     </ModelStructure>
 </fmiModelDescription>
