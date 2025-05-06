@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+    fmiVersion="2.0"
+    modelName="DerivativeCalculatorFMU"
+    guid="22345678-1234-1234-1234-1234567890ab"
+    variableNamingConvention="flat"
+    generationTool="UniFMU"
+>
+    <!-- CoSimulation element -->
+    <CoSimulation
+        modelIdentifier="unifmu"
+        needsExecutionTool="true"
+        canHandleVariableCommunicationStepSize="true"
+        canNotUseMemoryManagementFunctions="false"
+    />
+
+    <ModelVariables>
+        <!-- INPUT -->
+        <ScalarVariable name="in_signal" valueReference="0" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <!-- OUTPUT -->
+        <ScalarVariable name="derivative_out" valueReference="1" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+    </ModelVariables>
+
+    <ModelStructure>
+        <Outputs>
+            <!-- derivative_out is 2nd variable in the list -->
+            <Unknown index="2"/>
+        </Outputs>
+        <InitialUnknowns>
+            <Unknown index="2"/>
+        </InitialUnknowns>
+    </ModelStructure>
+</fmiModelDescription>

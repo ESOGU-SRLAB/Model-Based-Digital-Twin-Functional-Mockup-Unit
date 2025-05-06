@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SystemStructureDescription xmlns="http://www.pmsf.net/xsd/SystemStructureDescriptionDraft"
+                              version="Draft20170606"
+                              name="MySineSystem">
+    <System name="MySineSystem">
+        <Elements>
+            <Component name="reference"
+                       source="resources/SinusGeneratorFMU.fmu"
+                       type="application/x-fmu-sharedlibrary">
+                <Connectors>
+                    <Connector name="sin_out" kind="output"/>
+                </Connectors>
+            </Component>
+            <Component name="derivative"
+                       source="resources/DerivativeCalculatorFMU.fmu"
+                       type="application/x-fmu-sharedlibrary">
+                <Connectors>
+                    <Connector name="in_signal" kind="input"/>
+                    <Connector name="derivative_out" kind="output"/>
+                </Connectors>
+            </Component>
+            <Component name="integrator"
+                       source="resources/IntegratorFMU.fmu"
+                       type="application/x-fmu-sharedlibrary">
+                <Connectors>
+                    <Connector name="in_signal" kind="input"/>
+                    <Connector name="integrated_out" kind="output"/>
+                </Connectors>
+            </Component>
+        </Elements>
+        <Connections>
+            <!-- Sinus FMU'nun sin_out çıkışı, Derivative FMU’nun in_signal girdisine bağlanıyor -->
+            <Connection startElement="reference" startConnector="sin_out"
+                        endElement="derivative" endConnector="in_signal"/>
+            <!-- Derivative FMU'nun derivative_out çıkışı, Integrator FMU’nun in_signal girdisine bağlanıyor -->
+            <Connection startElement="derivative" startConnector="derivative_out"
+                        endElement="integrator" endConnector="in_signal"/>
+        </Connections>
+    </System>
+</SystemStructureDescription>
