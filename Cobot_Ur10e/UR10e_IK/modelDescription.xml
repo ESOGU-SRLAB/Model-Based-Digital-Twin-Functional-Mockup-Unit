@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+    fmiVersion="2.0"
+    modelName="UR10e_InverseKinematics"
+    guid="abcd1234-ef56-7890-abcd-ef1234567890"
+    variableNamingConvention="flat"
+    generationTool="UniFMU">
+
+    <CoSimulation
+        modelIdentifier="unifmu"
+        needsExecutionTool="true"
+        canHandleVariableCommunicationStepSize="true"
+        canNotUseMemoryManagementFunctions="false"
+    />
+
+    <ModelVariables>
+        <!-- ==================== INPUTS ==================== -->
+        <ScalarVariable name="x_t" valueReference="0" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="y_t" valueReference="1" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="z_t" valueReference="2" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+
+        <ScalarVariable name="roll_t" valueReference="3" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="pitch_t" valueReference="4" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="yaw_t" valueReference="5" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+
+        <!-- ==================== OUTPUTS (q1..q6) ==================== -->
+        <ScalarVariable name="q1" valueReference="6" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="q2" valueReference="7" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="q3" valueReference="8" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="q4" valueReference="9" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="q5" valueReference="10" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="q6" valueReference="11" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+    </ModelVariables>
+
+    <ModelStructure>
+        <Outputs>
+            <!-- index’ler, valueReference’a karşılıktır: 6..11 -->
+            <Unknown index="6"/>
+            <Unknown index="7"/>
+            <Unknown index="8"/>
+            <Unknown index="9"/>
+            <Unknown index="10"/>
+            <Unknown index="11"/>
+        </Outputs>
+        <InitialUnknowns>
+            <Unknown index="6"/>
+            <Unknown index="7"/>
+            <Unknown index="8"/>
+            <Unknown index="9"/>
+            <Unknown index="10"/>
+            <Unknown index="11"/>
+        </InitialUnknowns>
+    </ModelStructure>
+
+</fmiModelDescription>
