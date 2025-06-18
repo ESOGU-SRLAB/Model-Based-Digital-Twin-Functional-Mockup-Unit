@@ -5,7 +5,7 @@ from matplotlib.animation import FuncAnimation
 from model import get_all_joint_positions
 
 # 1. Simülasyon verisini oku
-df = pd.read_csv("ur10e_FK_out.csv")
+df = pd.read_csv(r"C:\Users\DELL\Documents\GitHub\model_based_digital_twin\Cobot_Ur10e\UR10e_FK\ur10e_FK_out.csv")
 joint_trajectories = df[['q1', 'q2', 'q3', 'q4', 'q5', 'q6']].values
 
 # 2. Her adımda tüm joint pozisyonlarını hesapla
