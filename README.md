@@ -104,7 +104,7 @@ Model-Based-Digital-Twin-Functional-Mockup-Unit/
 
 ## 👤 Authors and Contact
 
-**Serhat Kahraman**, ESOGU SRLab  
+**[Serhat Kahraman](https://github.com/Serhatkahraman1)**, ESOGU SRLab  
 📧 For academic inquiries, integration questions, or collaborations, please contact via GitHub issues or your institutional email.
 
 ---
