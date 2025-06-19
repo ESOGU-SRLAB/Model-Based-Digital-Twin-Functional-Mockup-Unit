@@ -5,7 +5,7 @@ This repository hosts modular, FMI 2.0-compliant Functional Mock-Up Units (FMUs)
 
 ## 🔍 Project Overview
 
-Digital twins are revolutionizing how robotic systems are simulated, monitored, and deployed. This project presents the creation and validation of FMU-based kinematic models for the UR10e Cobot, compliant with the **FMI 2.0 Co-Simulation** standard. 
+Digital twins are revolutionizing how robotic systems are simulated, monitored, and deployed. This project presents the creation and validation of FMU-based kinematic models for the UR10e Cobot, compliant with the **FMI 2.0 Co-Simulation** standard (see: https://github.com/modelica/fmi-standard). 
 
 The FMUs are developed using open-source Python toolchains such as **UniFMU** and tested in environments like **FMPy GUI** for robust cross-platform simulation.
 
