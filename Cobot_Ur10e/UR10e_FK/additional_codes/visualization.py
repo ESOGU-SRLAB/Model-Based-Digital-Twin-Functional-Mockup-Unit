@@ -50,7 +50,10 @@ with PdfPages(r"C:\Users\DELL\Documents\GitHub\model_based_digital_twin\Cobot_Ur
             ax1.plot(time, val2, label=f'{axis} (ur10e_out)', linestyle='--', linewidth=2)
             ax1.set_title(f"{category_title} - {axis} Comparison", fontsize=14)
             ax1.set_xlabel("Time (seconds)")
-            ax1.set_ylabel(f"{axis} Value")
+            if axis in ["x", "y", "z"]:
+                ax1.set_ylabel(f"{axis} Value (meters)")
+            else:
+                ax1.set_ylabel(f"{axis} Value (radians)")     
             ax1.legend(loc="upper left")
             ax1.grid(True)
             plt.tight_layout()
