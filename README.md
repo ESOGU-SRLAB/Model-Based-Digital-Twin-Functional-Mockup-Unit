@@ -25,7 +25,7 @@ A complete technical documentation of the development, implementation, and valid
 
 ---
 
-### 🧾 [FMU Types Catalogue (v0.3)](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/blob/main/docs/FMU_Types_Catalogue/RobotManipulatorDynamics_v0.3.pptx)
+### 🧾 [FMU Types Catalogue (v0.3)](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/blob/main/docs/FMU_Types_Catalogue/RobotManipulatorDynamics_v0.3.pdf)
 
 An indexed overview of all FMUs developed in this project so far, including:
 
