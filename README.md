@@ -11,7 +11,7 @@ The FMUs are developed using open-source Python toolchains such as **UniFMU** an
 
 ## 📌 Featured Deliverables
 
-### 📘 [Technical Report – UR10e FK FMU Model Validation](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/blob/main/docs/Technical%20Report%20UR10e%20Cobot%20Arm%20Forward%20Kinematics%20Functional%20Mock-Up%20Unit%20Model%20Validation%20.docx)
+### 📘 [Technical Report – UR10e FK FMU Model Validation](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/blob/main/docs/Technical%20Report%20UR10e%20Cobot%20Arm%20Forward%20Kinematics%20Functional%20Mock-Up%20Unit%20Model%20Validation.pdf)
 
 A complete technical documentation of the development, implementation, and validation of the **[UR10e](https://www.universal-robots.com/tr/urunler/ur10-robot/) Forward Kinematics FMU**, including:
 
