@@ -146,7 +146,7 @@ def matrix_to_quaternion(T):
     return qx, qy, qz, qw
 
 # ─────────────────────────────────────────────────────────────
-# 4) FMU Co-Simulation Class: (No changes needed here)
+# 4) FMU Co-Simulation Class:
 # ─────────────────────────────────────────────────────────────
 class Model(Fmi2FMU):
     """FMI Co-Simulation model for UR10e robot."""
@@ -214,34 +214,3 @@ def create_fmu_instance():
 if __name__ == "__main__":
     print("Testing UR10e Forward Kinematics with User-Provided Document's DH Parameters...")
     
-    # Test Girdisi (Sizin sağladığınız örnek)
-    q_input = np.array([-0.693, -0.833, 0.951, 1.149, 1.515, 1.739])
-
-    # Beklenen Sonuçlar (Gerçek Robot Verisi)
-    expected_pos = np.array([-0.807, 0.436, 0.420])
-    expected_rpy = np.array([-3.038, -0.289, 2.275])
-    
-    # Hesaplamayı yap
-    test_model = create_fmu_instance()
-    test_model.set_real(list(range(6)), q_input)
-    test_model._update_outputs()
-    results, status = test_model.get_real(list(range(6, 16)))
-    
-    calculated_pos = np.array(results[0:3])
-    calculated_rpy = np.array(results[3:6])
-    
-    # Sonuçları Karşılaştır
-    pos_error = np.linalg.norm(calculated_pos - expected_pos)
-    
-    print("\n--- TEST RESULTS ---")
-    print(f"Input Angles (rad): {[f'{a:.4f}' for a in q_input]}")
-    print("-" * 20)
-    print("POSITION:")
-    print(f"  Calculated: x={calculated_pos[0]:.4f}, y={calculated_pos[1]:.4f}, z={calculated_pos[2]:.4f}")
-    print(f"  Expected:   x={expected_pos[0]:.4f}, y={expected_pos[1]:.4f}, z={expected_pos[2]:.4f}")
-    print(f"  Position Error (Euclidean Distance): {pos_error:.4f} m")
-    print("-" * 20)
-    print("ORIENTATION (RPY):")
-    print(f"  Calculated: roll={calculated_rpy[0]:.4f}, pitch={calculated_rpy[1]:.4f}, yaw={calculated_rpy[2]:.4f}")
-    print(f"  Expected:   roll={expected_rpy[0]:.4f}, pitch={expected_rpy[1]:.4f}, yaw={expected_rpy[2]:.4f}")
-    print("-" * 20)

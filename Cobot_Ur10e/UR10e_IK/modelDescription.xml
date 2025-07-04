@@ -59,20 +59,20 @@
     <ModelStructure>
         <Outputs>
             <!-- index’ler, valueReference’a karşılıktır: 6..11 -->
-            <Unknown index="6"/>
             <Unknown index="7"/>
             <Unknown index="8"/>
             <Unknown index="9"/>
             <Unknown index="10"/>
             <Unknown index="11"/>
+            <Unknown index="12"/>
         </Outputs>
         <InitialUnknowns>
-            <Unknown index="6"/>
             <Unknown index="7"/>
             <Unknown index="8"/>
             <Unknown index="9"/>
             <Unknown index="10"/>
             <Unknown index="11"/>
+            <Unknown index="12"/>
         </InitialUnknowns>
     </ModelStructure>
 

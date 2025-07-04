@@ -1,168 +1,188 @@
-"""
-UR10e ‑ Forward Kinematics FMU (Co‑Simulation)
-==============================================
-* **Inputs  (6)** : q1 … q6  – joint angles in **radians**
-* **Outputs (10)**: x, y, z (m) – end‑effector position  
-                    roll, pitch, yaw (rad) – XYZ‑Euler  
-                    qx, qy, qz, qw – quaternion (unit‑norm)
+# model.py
 
-Model implements ONLY the forward‑kinematics chain published in
-*Universal Robots e‑Series Analytical FPK* paper.  It includes:
-  • Modified DH parameters for UR10e  
-  • Built‑in frame fixes: Craig→UR DF axis swap, +LB base lift, +LTP tool‑plate offset.
-No dynamics, control or internal states ⇒ single‑step algebraic FMU.
+"""
+UR10e Inverse Kinematics FMU (Co-Simulation)
+============================================
+This FMU implements the inverse kinematics for the UR10e robot arm.
+
+* **Inputs  (6)** : 
+                  x_t, y_t, z_t (m)  – end-effector position
+                  roll_t, pitch_t, yaw_t (rad) – XYZ-Euler angles
+
+* **Outputs (6)**: q1, q2, q3, q4, q5, q6 (rad) – joint angles
 """
 
 import math
 import numpy as np
+import pickle
 from fmi2 import Fmi2FMU, Fmi2Status
 
-# ──────────────────────────────────────────────────────────────
-# 1.  Modified DH parameters (metres, radians) — Craig scheme
-#     columns: (a_{i‑1}, d_i , alpha_{i‑1})
-# ──────────────────────────────────────────────────────────────
-DH_PARAMS = [
-    (0.000,   0.000,  math.pi/2),   # i=1
-    (0.000,   0.000,  math.pi/2),   # i=2  (θ₂ + 90° handled later)
-    (0.613,   0.000,  0.0),         # i=3
-    (0.572,   0.174,  0.0),         # i=4  (θ₄ − 90° handled later)
-    (0.000,   0.120, -math.pi/2),   # i=5
-    (0.000,   0.000,  math.pi/2)    # i=6
-]
-NUM_JOINTS = 6
+# ──────────────────────────────────────────────────
+# 1) Constants:
+# ──────────────────────────────────────────────────
 
-# ──────────────────────────────────────────────────────────────
-# 2.  Fixed transforms ({B}→{0} and {6}→{TP})
-# ──────────────────────────────────────────────────────────────
-LB   = 0.181   # base lift (m) – Table‑8
-LTP  = 0.117   # tool‑plate length (m)
+d1 = 0.181
+a2 = 0.613
+a3 = 0.572
+d4 = 0.174
+d5 = 0.120
+d6 = 0.117
 
-T_B0  = np.eye(4);  T_B0[2,3] = LB
-T_6TP = np.eye(4);  T_6TP[2,3] = LTP
-# Axis swap Craig {0}: X→Y, Y→‑X  (−π/2 around Z)
-T_fix = np.array([[ 0, -1,  0, 0],
-                  [ 1,  0,  0, 0],
-                  [ 0,  0,  1, 0],
-                  [ 0,  0,  0, 1]])
+# ──────────────────────────────────────────────────
+# 2) Model Functions:
+# ──────────────────────────────────────────────────
 
-# ──────────────────────────────────────────────────────────────
-# 3.  Kinematic helpers
-# ──────────────────────────────────────────────────────────────
+def solve_theta1(x, y, d4):
+    print(f"[solve_theta1] Inputs: x={x}, y={y}, d4={d4}")
+    E = -y
+    F = x
+    G = -d4
+    a = G - E
+    b = 2 * F
+    c = G + E
+    discriminant = b**2 - 4 * a * c
+    print(f"[solve_theta1] a={a}, b={b}, c={c}, discriminant={discriminant}")
+    if discriminant < 0:
+        print("[solve_theta1] No real solution: discriminant < 0")
+        return []
+    sqrt_disc = math.sqrt(discriminant)
+    t1 = (-b + sqrt_disc) / (2 * a)
+    t2 = (-b - sqrt_disc) / (2 * a)
+    return [2 * math.atan(t1), 2 * math.atan(t2)]
 
-def dh_transform(theta: float, d: float, a: float, alpha: float):
-    """4×4 DH homogeneous matrix."""
-    ct, st = math.cos(theta), math.sin(theta)
-    ca, sa = math.cos(alpha), math.sin(alpha)
-    return np.array([[ ct, -st*ca,  st*sa, a*ct],
-                     [ st,  ct*ca, -ct*sa, a*st],
-                     [  0,      sa,     ca,    d],
-                     [  0,       0,      0,    1]])
+def solve_theta6(R, theta1):
+    r11, r12 = R[0, 0], R[0, 1]
+    r21, r22 = R[1, 0], R[1, 1]
+    num = r12 * math.sin(theta1) - r22 * math.cos(theta1)
+    den = r11 * math.cos(theta1) - r21 * math.sin(theta1)
+    return math.atan2(num, den)
 
-def matrix_to_rpy(T):
-    """XYZ‑Euler from rotation matrix."""
-    r11, r12, r13 = T[0, :3]
-    r21, r22, r23 = T[1, :3]
-    r31, r32, r33 = T[2, :3]
-    pitch = math.atan2(-r31, math.hypot(r11, r21))
-    roll  = math.atan2(r21, r11)
-    yaw   = math.atan2(r32, r33)
-    return roll, pitch, yaw
+def solve_theta5(R, theta1, theta6):
+    r13 = R[0, 2]
+    r23 = R[1, 2]
+    r33 = R[2, 2]
+    sin_5 = r13 * math.cos(theta1) + r23 * math.sin(theta1)
+    return math.atan2(sin_5, r33)
 
-def matrix_to_quaternion(T):
-    """Convert rotation matrix to xyzw quaternion."""
-    m = T[:3, :3]; tr = np.trace(m)
-    if tr > 0:
-        s = math.sqrt(tr + 1.0) * 2
-        qw = 0.25 * s
-        qx = (m[2,1] - m[1,2]) / s
-        qy = (m[0,2] - m[2,0]) / s
-        qz = (m[1,0] - m[0,1]) / s
-    else:
-        idx = int(np.argmax([m[0,0], m[1,1], m[2,2]]))
-        if idx == 0:
-            s = math.sqrt(1.0 + m[0,0] - m[1,1] - m[2,2]) * 2
-            qx = 0.25 * s
-            qy = (m[0,1] + m[1,0]) / s
-            qz = (m[0,2] + m[2,0]) / s
-            qw = (m[2,1] - m[1,2]) / s
-        elif idx == 1:
-            s = math.sqrt(1.0 + m[1,1] - m[0,0] - m[2,2]) * 2
-            qx = (m[0,1] + m[1,0]) / s
-            qy = 0.25 * s
-            qz = (m[1,2] + m[2,1]) / s
-            qw = (m[0,2] - m[2,0]) / s
-        else:
-            s = math.sqrt(1.0 + m[2,2] - m[0,0] - m[1,1]) * 2
-            qx = (m[0,2] + m[2,0]) / s
-            qy = (m[1,2] + m[2,1]) / s
-            qz = 0.25 * s
-            qw = (m[1,0] - m[0,1]) / s
-    return qx, qy, qz, qw
+def solve_theta2_theta3(x, y, z, theta1, theta5):
+    A = z - d1 - d4 * math.sin(theta5)
+    B = x * math.cos(theta1) + y * math.sin(theta1) - d4 * math.cos(theta5)
+    E = a2**2 + a3**2
+    F = -2 * a2 * a3
+    G = B**2 + A**2 - E
+    a = G - E
+    b = 2 * F
+    c = G + E
+    discriminant = b**2 - 4 * a * c
+    if discriminant < 0:
+        return []
+    sqrt_disc = math.sqrt(discriminant)
+    t1 = (-b + sqrt_disc) / (2 * a)
+    t2 = (-b - sqrt_disc) / (2 * a)
+    theta2_1 = 2 * math.atan(t1)
+    theta2_2 = 2 * math.atan(t2)
+    def compute_theta3(theta2):
+        k1 = a2 + a3 * math.cos(theta2)
+        k2 = a3 * math.sin(theta2)
+        return math.atan2(A, B) - math.atan2(k2, k1)
+    return [(theta2_1, compute_theta3(theta2_1)), (theta2_2, compute_theta3(theta2_2))]
 
+def solve_theta4(R, theta2, theta3, theta6):
+    r31 = R[2, 0]
+    r32 = R[2, 1]
+    A = r32 * math.cos(theta6) - r31 * math.sin(theta6)
+    B = -r32 * math.sin(theta6) - r31 * math.cos(theta6)
+    theta234 = math.atan2(A, B)
+    return theta234 - theta2 - theta3
 
-def forward_kinematics(q_rad):
-    """Return pose vector [x,y,z, roll,pitch,yaw, qx,qy,qz,qw]."""
-    T = np.eye(4)
-    for i, (a_prev, d_i, alpha_prev) in enumerate(DH_PARAMS):
-        theta = q_rad[i]
-        if i == 1:   # θ₂ + 90°
-            theta += math.pi/2
-        elif i == 3: # θ₄ – 90°
-            theta -= math.pi/2
-        T = T @ dh_transform(theta, d_i, a_prev, alpha_prev)
-    # sabit dönüştürmeler ve eksen düzeltmesi
-    T_full = T_B0 @ (T_fix @ T) @ T_6TP
-    x, y, z           = T_full[0,3], T_full[1,3], T_full[2,3]
-    roll, pitch, yaw  = matrix_to_rpy(T_full)
-    qx, qy, qz, qw    = matrix_to_quaternion(T_full)
-    return np.array([x, y, z, roll, pitch, yaw, qx, qy, qz, qw])
+def inverse_kinematics(x, y, z, roll, pitch, yaw):
+    """
+    Compute inverse kinematics solutions for UR10e.
+    Returns up to 4 solutions [[q1, ..., q6], ...]
+    """
+    Rx = np.array([
+        [1, 0, 0],
+        [0, math.cos(roll), -math.sin(roll)],
+        [0, math.sin(roll), math.cos(roll)]
+    ])
+    Ry = np.array([
+        [math.cos(pitch), 0, math.sin(pitch)],
+        [0, 1, 0],
+        [-math.sin(pitch), 0, math.cos(pitch)]
+    ])
+    Rz = np.array([
+        [math.cos(yaw), -math.sin(yaw), 0],
+        [math.sin(yaw), math.cos(yaw), 0],
+        [0, 0, 1]
+    ])
+    R = Rz @ Ry @ Rx
 
-# ──────────────────────────────────────────────────────────────
-# 4.  FMI Co‑Simulation class
-# ──────────────────────────────────────────────────────────────
+    solutions = []
+    for theta1 in solve_theta1(x, y, d4):
+        theta6 = solve_theta6(R, theta1)
+        theta5 = solve_theta5(R, theta1, theta6)
+        for theta2, theta3 in solve_theta2_theta3(x, y, z, theta1, theta5):
+            theta4 = solve_theta4(R, theta2, theta3, theta6)
+            solutions.append([theta1, theta2, theta3, theta4, theta5, theta6])
+    return solutions
+
+# ──────────────────────────────────────────────────
+
 class Model(Fmi2FMU):
-    """Stateless FK FMU — UR10e"""
-    def __init__(self):
-        super().__init__()
-        self.q = np.zeros(NUM_JOINTS)
-        self._update_pose()
-        # valueReference map
-        self.ref = {i: f"q{i+1}" for i in range(6)}
-        self.ref.update({
-            6:"x",7:"y",8:"z",9:"roll",10:"pitch",11:"yaw",
-            12:"qx",13:"qy",14:"qz",15:"qw"})
+    def __init__(self, reference_to_attr=None):
+        super().__init__(reference_to_attr)
+        self.reference_to_attr = {
+            0: 'x_t', 1: 'y_t', 2: 'z_t',
+            3: 'roll_t', 4: 'pitch_t', 5: 'yaw_t',
+            6: 'q1', 7: 'q2', 8: 'q3', 9: 'q4', 10: 'q5', 11: 'q6'
+        }
+        for attr in self.reference_to_attr.values():
+            setattr(self, attr, 0.0)
 
-    # pose recompute
-    def _update_pose(self):
-        p = forward_kinematics(self.q)
-        (self.x, self.y, self.z,
-         self.roll, self.pitch, self.yaw,
-         self.qx, self.qy, self.qz, self.qw) = p
+        self.inputs = ['x_t', 'y_t', 'z_t', 'roll_t', 'pitch_t', 'yaw_t']
+        self.outputs = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6']
+        self.initial_unknowns = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6']
 
-    # FMI boilerplate (only essential)
-    def instantiate(self, *a): return Fmi2Status.ok
-    def setup_experiment(self, *a): return Fmi2Status.ok
-    def enter_initialization_mode(self): return Fmi2Status.ok
-    def exit_initialization_mode(self): self._update_pose(); return Fmi2Status.ok
+    def get_variable_name(self, vr):
+        return self.reference_to_attr[vr]
 
     def set_real(self, refs, values):
-        for r, v in zip(refs, values):
-            if r < 6:
-                self.q[r] = v
-        self._update_pose()
+        for ref, val in zip(refs, values):
+            setattr(self, self.get_variable_name(ref), val)
         return Fmi2Status.ok
 
     def get_real(self, refs):
-        return [getattr(self, self.ref[r]) for r in refs], Fmi2Status.ok
+        return [getattr(self, self.get_variable_name(ref)) for ref in refs], Fmi2Status.ok
 
-    def do_step(self, *a):
-        return Fmi2Status.ok  # stateless
+    def do_step(self, current_time, step_size, no_prior):
+        print(f"[doStep] Inputs: x={self.x_t}, y={self.y_t}, z={self.z_t}, roll={self.roll_t}, pitch={self.pitch_t}, yaw={self.yaw_t}")
+        solutions = inverse_kinematics(self.x_t, self.y_t, self.z_t, self.roll_t, self.pitch_t, self.yaw_t)
+        print(f"[doStep] Found {len(solutions)} IK solutions")
 
-    def reset(self):
-        self.q[:] = 0.0
-        self._update_pose()
+        if solutions:
+            solution = solutions[0]
+            self.q1, self.q2, self.q3, self.q4, self.q5, self.q6 = solution
+        else:
+            self.q1 = self.q2 = self.q3 = self.q4 = self.q5 = self.q6 = float('nan')
+
         return Fmi2Status.ok
 
+    def serialize(self):
+        return Fmi2Status.ok, pickle.dumps([
+            self.x_t, self.y_t, self.z_t,
+            self.roll_t, self.pitch_t, self.yaw_t
+        ])
+
+    def deserialize(self, state):
+        self.x_t, self.y_t, self.z_t, self.roll_t, self.pitch_t, self.yaw_t = pickle.loads(state)
+        return Fmi2Status.ok
+
+    def instantiate(self, instanceName, resourceLocation): return Fmi2Status.ok
+    def setup_experiment(self, startTime, stopTime, tolerance): return Fmi2Status.ok
+    def enter_initialization_mode(self): return Fmi2Status.ok
+    def exit_initialization_mode(self): return Fmi2Status.ok
+    def terminate(self): return Fmi2Status.ok
+    def reset(self): return Fmi2Status.ok
 
 def create_fmu_instance():
     return Model()
