@@ -1,1 +1,0 @@
-ModelStructure/InitialUnknowns does not contain the expected set of variables. Expected {q1, q2, q3, q4, q5, q6} but was {q1, q2, q3, q4, q5, q6, yaw_t}.

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+    fmiVersion="2.0"
+    modelName="UR10e_ForwardKinematics"
+    guid="12345678-90ab-cdef-1234-567890abcdef"
+    variableNamingConvention="flat"
+    generationTool="UniFMU">
+
+    <CoSimulation
+        modelIdentifier="unifmu"
+        needsExecutionTool="true"
+        canHandleVariableCommunicationStepSize="true"
+        canNotUseMemoryManagementFunctions="false"
+    />
+
+    <ModelVariables>
+        <!-- ==================== INPUTS ==================== -->
+        <ScalarVariable name="q1" valueReference="0" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="q2" valueReference="1" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="q3" valueReference="2" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="q4" valueReference="3" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="q5" valueReference="4" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="q6" valueReference="5" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+
+        <!-- ==================== OUTPUTS ==================== -->
+        <!-- End-effector position -->
+        <ScalarVariable name="x" valueReference="6" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="y" valueReference="7" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="z" valueReference="8" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+
+        <!-- End-effector orientation (Euler angles) -->
+        <ScalarVariable name="roll" valueReference="9" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="pitch" valueReference="10" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="yaw" valueReference="11" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+
+        <!-- Optional: End-effector orientation (Quaternion form) -->
+        <ScalarVariable name="qx" valueReference="12" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="qy" valueReference="13" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="qz" valueReference="14" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="qw" valueReference="15" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+    </ModelVariables>
+
+    <ModelStructure>
+        <Outputs>
+            <Unknown index="7"/>
+            <Unknown index="8"/>
+            <Unknown index="9"/>
+            <Unknown index="10"/>
+            <Unknown index="11"/>
+            <Unknown index="12"/>
+            <Unknown index="13"/>
+            <Unknown index="14"/>
+            <Unknown index="15"/>
+            <Unknown index="16"/>    
+        </Outputs>
+        <InitialUnknowns>
+            <Unknown index="7"/>
+            <Unknown index="8"/>
+            <Unknown index="9"/>
+            <Unknown index="10"/>
+            <Unknown index="11"/>
+            <Unknown index="12"/>
+            <Unknown index="13"/>
+            <Unknown index="14"/>
+            <Unknown index="15"/>
+            <Unknown index="16"/>
+        </InitialUnknowns>
+    </ModelStructure>
+
+</fmiModelDescription>
