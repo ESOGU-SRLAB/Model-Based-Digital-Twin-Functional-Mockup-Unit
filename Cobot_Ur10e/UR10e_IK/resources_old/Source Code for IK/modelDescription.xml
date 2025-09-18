@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+    fmiVersion="2.0"
+    modelName="UR10e_InverseKinematics"
+    guid="87654321-abcd-ef12-3456-7890abcdef12"
+    variableNamingConvention="flat"
+    generationTool="UniFMU">
+    <CoSimulation
+        modelIdentifier="unifmu"
+        needsExecutionTool="true"
+        canHandleVariableCommunicationStepSize="true"
+        canNotUseMemoryManagementFunctions="false"
+    />
+    <ModelVariables>
+        <!-- ==================== INPUTS ==================== -->
+        <!-- End-effector position -->
+        <ScalarVariable name="x_ik" valueReference="0" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="y_ik" valueReference="1" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="z_ik" valueReference="2" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <!-- End-effector orientation (Euler angles) -->
+        <ScalarVariable name="roll_ik" valueReference="3" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="pitch_ik" valueReference="4" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <ScalarVariable name="yaw_ik" valueReference="5" causality="input" variability="continuous">
+            <Real start="0.0"/>
+        </ScalarVariable>
+        <!-- ==================== OUTPUTS ==================== -->
+        <!-- Joint angles -->
+        <ScalarVariable name="q1_ik" valueReference="6" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="q2_ik" valueReference="7" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="q3_ik" valueReference="8" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="q4_ik" valueReference="9" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="q5_ik" valueReference="10" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+        <ScalarVariable name="q6_ik" valueReference="11" causality="output" variability="continuous" initial="calculated">
+            <Real/>
+        </ScalarVariable>
+    </ModelVariables>
+    <ModelStructure>
+        <Outputs>
+            <Unknown index="7"/>
+            <Unknown index="8"/>
+            <Unknown index="9"/>
+            <Unknown index="10"/>
+            <Unknown index="11"/>
+            <Unknown index="12"/>
+        </Outputs>
+        <InitialUnknowns>
+            <Unknown index="7"/>
+            <Unknown index="8"/>
+            <Unknown index="9"/>
+            <Unknown index="10"/>
+            <Unknown index="11"/>
+            <Unknown index="12"/>
+        </InitialUnknowns>
+    </ModelStructure>
+</fmiModelDescription>

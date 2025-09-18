@@ -25,19 +25,36 @@ A complete technical documentation of the development, implementation, and valid
 
 ---
 
+### 📘 [Technical Report – UR10e FK FMU Model Validation](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/blob/main/docs/)
+
+A complete technical documentation of the development, implementation, and validation of the **[UR10e](https://www.universal-robots.com/tr/urunler/ur10-robot/) Forward Kinematics FMU**, including:
+
+- IKPy based FMU modeling
+- FMU generation and internal architecture
+- Simulation via real robot's end-effector and orientation data from pendant
+- Statistical comparison (MAE, RMSE) with physical measurements
+- Orientation tracking with quaternion normalization
+
+👉 Ideal for researchers and engineers looking to understand the FMU pipeline in industrial robotics.
+
+---
+
 ### 🧾 [FMU Types Catalogue (v0.3)](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/blob/main/docs/FMU_Types_Catalogue/RobotManipulatorDynamics_v0.3.pdf)
 
 An indexed overview of all FMUs developed in this project so far, including:
 
 - **[UR10e Forward Kinematics](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/tree/main/Cobot_Ur10e/UR10e_FK/FMU_Ur10e_FK_Source_Codes)**
-- Inverse Kinematics (upcoming)
-- Dynamics and HIL-ready modules (planned)
+
+- **[UR10e Inverse Kinematics](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/tree/main/Cobot_Ur10e/UR10e_IK)**
+- Dynamics and HIL-ready modules (upcoming)
 
 The catalogue is versioned and updated to reflect the current state of modular FMU libraries developed for robotic manipulators.
 
 ---
 
-### 🧠 [FMU Raw Source Code – UR10e FK](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/tree/main/Cobot_Ur10e/UR10e_FK/FMU_Ur10e_FK_Source_Codes)
+### 🧠 [FMU Raw Source Code – UR10e FK](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/tree/main/Cobot_Ur10e/UR10e_FK/Ur10e_FK_Source_Codes)
+
+### 🧠 [FMU Raw Source Code – UR10e IK](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/tree/main/Cobot_Ur10e/UR10e_IK/UR10e_IK_files)
 
 Core implementation in Python for:
 
