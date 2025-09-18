@@ -113,22 +113,22 @@ A quantitative and visual analysis comparing the FMU outputs with joint telemetr
 
 ## 📁 Repository Structure
 
-```bash
+
 Model-Based-Digital-Twin-Functional-Mockup-Unit/
 │
-├── docs/                        # Technical reports and presentations
-│   ├── Technical Report ...docx
-│   └── FMU_Types_Catalogue/
-│       └── RobotManipulatorDynamics_v0.3.pptx
-│
-├── Cobot_Ur10e/
-│   └── UR10e_FK/
-│       ├── FMU_Ur10e_FK_Source_Codes/
-│       ├── UR10e_FK.fmu
-│       ├── fmpy_inputs.csv
-│       ├── ur10e_outs.xlsx
-│       └── RealUR10e-FMU_output_analysis.pdf
-```
+├───Cobot_Ur10e
+│   ├───UR10e_FK
+│       ├───Ur10e_FK_Source_Codes
+│       ├───ur10e_FK.fmu
+│       ├───UR10e-FMU_FK_output_analysis.pdf
+│   └───UR10e_IK
+│       └───UR10e_IK_files
+│       └───ur10e_IK.fmu
+├───docs
+│   └───FMU_Types_Catalogue
+└───Kawasaki_RS005L_Robot_Arm
+.
+.
 
 ---
 
