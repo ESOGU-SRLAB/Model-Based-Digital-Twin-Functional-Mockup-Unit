@@ -25,7 +25,7 @@ A complete technical documentation of the development, implementation, and valid
 
 ---
 
-### 📘 [Technical Report – UR10e IK FMU Model Validation](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/blob/main/docs/Technical%20Report%20UR10e%20Cobot%20Arm%20Inverse%20Kinematics%20Functional%20Mock-Up%20Unit%20Model%20Validation.pdf))
+### 📘 [Technical Report – UR10e IK FMU Model Validation](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/blob/main/docs/Technical%20Report%20UR10e%20Cobot%20Arm%20Inverse%20Kinematics%20Functional%20Mock-Up%20Unit%20Model%20Validation.pdf)
 
 A complete technical documentation of the development, implementation, and validation of the **[UR10e](https://www.universal-robots.com/tr/urunler/ur10-robot/) Inverse Kinematics FMU**, including:
 
@@ -35,7 +35,7 @@ A complete technical documentation of the development, implementation, and valid
 - Statistical comparison (MAE, RMSE) with physical measurements
 - Orientation tracking with quaternion normalization
 
-👉 Ideal for researchers and engineers looking to understand the FMU pipeline in industrial robotics.
+👉 Ideal for engineers looking to understand the kinematics solution in FMU pipeline in digital twins.
 
 ---
 
@@ -54,8 +54,6 @@ The catalogue is versioned and updated to reflect the current state of modular F
 
 ### 🧠 [FMU Raw Source Code – UR10e FK](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/tree/main/Cobot_Ur10e/UR10e_FK/Ur10e_FK_Source_Codes)
 
-### 🧠 [FMU Raw Source Code – UR10e IK](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/tree/main/Cobot_Ur10e/UR10e_IK/UR10e_IK_files)
-
 Core implementation in Python for:
 
 - Homogeneous transformation logic
@@ -64,6 +62,20 @@ Core implementation in Python for:
 - Self-test modules for standalone simulation
 
 All the code is cleanly modularized in `model.py` and supports both FMU packaging and direct CLI-based testing.
+
+### 🧠 [FMU Raw Source Code – UR10e IK](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/tree/main/Cobot_Ur10e/UR10e_IK/UR10e_IK_files)
+
+Core implementation in Python for:
+
+- Inverse Kinematics Engine :Built upon the ikpy library, leveraging Denavit–Hartenberg parameters of the UR10e. Includes Jacobian-based numerical solving and deterministic elbow-down branch selection.
+
+- Canonicalization Logic: Implements post-processing of raw IK solutions (e.g., canonicalize_q2_q4) to consistently enforce UR10e’s elbow-down convention and prevent oscillations between equivalent solution branches.
+
+- FMU Interface (FMI 2.0-compliant): Encapsulated in Model class (model.py) which maps FMU inputs (pose vectors) to outputs (joint angles). Implements all FMI callbacks (set_real, get_real, do_step, serialize/deserialize) for co-simulation.
+
+- Transformation Utilities: Functions for pose → homogeneous transform construction (build_transform), angle wrapping (wrap_to_pi), and FK validation checks against DH parameters.
+
+- Seed Management & Stability: Maintains last valid joint configuration across solver calls to improve convergence stability in iterative IK solving.
 
 ---
 
@@ -75,6 +87,7 @@ A quantitative and visual analysis comparing the FMU outputs with joint telemetr
 - Quaternion distance metrics
 - RMSE/MAE summary tables
 - Overlay plots of simulated vs real trajectories
+
 
 ---
 
