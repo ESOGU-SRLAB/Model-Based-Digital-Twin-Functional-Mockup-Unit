@@ -111,9 +111,9 @@ A quantitative and visual analysis comparing the FMU outputs with joint telemetr
 
 ---
 
-## 📁 Repository Structure
+## 📁 Repository Structure (should be checked)
 
-
+```bash
 Model-Based-Digital-Twin-Functional-Mockup-Unit/
 │
 ├───Cobot_Ur10e
@@ -126,9 +126,12 @@ Model-Based-Digital-Twin-Functional-Mockup-Unit/
 │       └───ur10e_IK.fmu
 ├───docs
 │   └───FMU_Types_Catalogue
+│       └───RobotManipulatorDynamics_v0.3.pptx
+│   └───Technical Report UR10e Cobot Arm Forward Kinematics Functional Mock-Up Unit Model Validation.pdf
+│   └───Technical Report UR10e Cobot Arm Inverse Kinematics Functional Mock-Up Unit Model Validation.pdf
+│   └───UniversalRobotKinematics.pdf   
 └───Kawasaki_RS005L_Robot_Arm
-.
-.
+```
 
 ---
 
