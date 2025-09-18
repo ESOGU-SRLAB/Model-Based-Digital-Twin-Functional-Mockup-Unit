@@ -25,7 +25,7 @@ A complete technical documentation of the development, implementation, and valid
 
 ---
 
-### 📘 [Technical Report – UR10e FK FMU Model Validation](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/blob/main/docs/)
+### 📘 [Technical Report – UR10e IK FMU Model Validation](https://github.com/ESOGU-SRLAB/Model-Based-Digital-Twin-Functional-Mockup-Unit/blob/main/docs/)
 
 A complete technical documentation of the development, implementation, and validation of the **[UR10e](https://www.universal-robots.com/tr/urunler/ur10-robot/) Forward Kinematics FMU**, including:
 
